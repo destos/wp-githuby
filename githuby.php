@@ -25,16 +25,11 @@ class githuby_plugin
 
 	function __construct()
 	{
-
+		// ini github api
+		$this->gh = new phpGitHubApi( GitHuby_DEBUG );
 		// get plugin options for connecting.
-		$options = array(
-			'login'       => get_option('github_user') ,
-			'token'       => get_option('github_token'),
-			'debug'       => GitHuby_DEBUG
-		);
-
-		$this->gh = new phpGitHubApi( $options );
-
+		$this->gh->authenticate( get_option('github_user'), get_option('github_token') );
+		
 		// plugin init
 		$this->init();
 	}
@@ -45,9 +40,12 @@ class githuby_plugin
 		if (is_admin()) {
 			// Create menus and options
 			add_action('admin_menu', array( &$this, 'ghby_create_menu'));
+			
 			// instalation and adeactivation hooks
 			register_activation_hook( __FILE__, array( &$this, 'install') );
 			register_deactivation_hook( __FILE__, array( &$this, 'uninstall') );
+		}else{
+			
 		}
 
 	}
@@ -106,6 +104,42 @@ class githuby_plugin
 		        <td><input type="text" name="github_token" value="<?php echo get_option('github_token'); ?>" /></td>
 		        </tr>
 		    </table>
+		    
+		    <?
+		    $user = get_option('github_user');
+		    if ( $user != '' ){
+		    	
+		    	try{
+			    	$gh_user = $this->gh->showUser( get_option('github_user') );
+			    	
+			    	// get list of public repos
+			    	if( $gh_user['public_repo_count'] >= 1 ){
+			    		
+			    		$pub_repos = $this->gh->get('repos/show/'.$user);
+						  echo '<pre>';
+						  print_r($pub_repos);
+						  echo '</pre>';
+			    	}
+			    	
+			    	if( $gh_user['total_private_repo_count'] >= 1 ){
+			    		
+			    	}
+			    	echo '<pre>';
+			    	print_r( $gh_user );
+			    	echo '</pre>';
+		    	 	extract( $gh_user );
+			    	?>
+			    	<h1>hey <?= $name ?>!</h1>
+			    	<?
+		    	}
+		    	catch( phpGitHubApiRequestException $e ){
+		    		if ( $e->getCode() == 401 ){
+		    			
+		    		}
+		    	}
+		    	
+		    }
+		    ?>
 
 		    <p class="submit">
 		    <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
