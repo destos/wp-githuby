@@ -8,7 +8,7 @@ Version: 0.1
 Author URI: http://patrick.forringer.com
 */
 
-define( GitHuby_DEBUG, true );
+define( GitHuby_DEBUG, false );
 
 define( GitHuby_VER, 0.1);
 
@@ -117,7 +117,7 @@ class githuby_plugin
 			    		
 			    		$pub_repos = $this->gh->get('repos/show/'.$user);
 						  echo '<pre>';
-						  print_r($pub_repos);
+							//print_r($pub_repos['repositories']);
 						  echo '</pre>';
 			    	}
 			    	
@@ -125,14 +125,24 @@ class githuby_plugin
 			    		
 			    	}
 			    	echo '<pre>';
-			    	print_r( $gh_user );
+			    	#print_r( $gh_user );
 			    	echo '</pre>';
 		    	 	extract( $gh_user );
+		    	 	
 			    	?>
-			    	<h1>hey <?= $name ?>!</h1>
+			    	<div>
+			    	<?= get_avatar( $email, 80, null, 'github' )?>
+			    	<h1>hey<?= $name; ?>!</h1>
+			    	</div>
+			    	<?
+			    	foreach($pub_repos['repositories'] as $repo ){
+			    		echo '<p>'.$repo['name'].'</p>';
+			    	}
+			    	?>
 			    	<?
 		    	}
 		    	catch( phpGitHubApiRequestException $e ){
+		    		echo $e->getMessage();
 		    		if ( $e->getCode() == 401 ){
 		    			
 		    		}
