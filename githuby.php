@@ -56,12 +56,12 @@ class githuby_plugin
 
 	private function install()
 	{
-
+		
 	}
 
 	private function uninstall()
 	{
-
+		
 	}
 
 	// --------------------------------------------------------
@@ -132,7 +132,7 @@ class githuby_plugin
 			    	?>
 			    	<div>
 			    	<?= get_avatar( $email, 80, null, 'github' )?>
-			    	<h1>hey<?= $name; ?>!</h1>
+			    	<h1><small>hey</small> <?= $name; ?>!</h1>
 			    	</div>
 			    	<?
 			    	foreach($pub_repos['repositories'] as $repo ){
