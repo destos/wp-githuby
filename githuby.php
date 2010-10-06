@@ -105,7 +105,7 @@ class githuby_plugin
 		        </tr>
 		    </table>
 		    
-		    <?
+		    <?php
 		    $user = get_option('github_user');
 		    if ( $user != '' ){
 		    	
@@ -117,7 +117,7 @@ class githuby_plugin
 			    		
 			    		$pub_repos = $this->gh->get('repos/show/'.$user);
 						  echo '<pre>';
-							//print_r($pub_repos['repositories']);
+							 print_r($pub_repos['repositories']);
 						  echo '</pre>';
 			    	}
 			    	
@@ -125,21 +125,22 @@ class githuby_plugin
 			    		echo 'private repos ahoy!';
 			    	}
 			    	echo '<pre>';
-			    	#print_r( $gh_user );
+			    		print_r( $gh_user );
 			    	echo '</pre>';
+			    	
 		    	 	extract( $gh_user );
 		    	 	
 			    	?>
 			    	<div>
-			    	<?= get_avatar( $email, 80, null, 'github' )?>
-			    	<h1><small>hey</small> <?= $name; ?>!</h1>
+			    	<?php echo get_avatar( $email, 80, null, 'github' )?>
+			    	<h1><small>hey</small> <?php echo $name; ?>!</h1>
 			    	</div>
-			    	<?
+			    	<?php
 			    	foreach($pub_repos['repositories'] as $repo ){
 			    		echo '<p>'.$repo['name'].'</p>';
 			    	}
 			    	?>
-			    	<?
+			    	<?php
 		    	}
 		    	catch( phpGitHubApiRequestException $e ){
 		    		echo $e->getMessage();
