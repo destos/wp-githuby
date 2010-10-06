@@ -122,7 +122,7 @@ class githuby_plugin
 			    	}
 			    	
 			    	if( $gh_user['total_private_repo_count'] >= 1 ){
-			    		
+			    		echo 'private repos ahoy!';
 			    	}
 			    	echo '<pre>';
 			    	#print_r( $gh_user );
